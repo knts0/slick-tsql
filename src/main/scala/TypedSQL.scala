@@ -6,7 +6,9 @@ import scala.concurrent.duration.Duration
 import slick.backend.{DatabaseConfig, StaticDatabaseConfig}
 
 @StaticDatabaseConfig("file:src/main/resources/application.conf#testdb")
-object TypedSQL extends App {
+object TypedSQL
+  extends App
+  with Transfer {
   val dc = DatabaseConfig.forAnnotation[JdbcProfile]
   import dc.driver.api._
 
