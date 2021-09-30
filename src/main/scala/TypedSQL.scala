@@ -5,21 +5,21 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import slick.backend.{DatabaseConfig, StaticDatabaseConfig}
 
-@StaticDatabaseConfig("file:src/main/resources/application.conf#tsql")
+@StaticDatabaseConfig("file:src/main/resources/application.conf#testdb")
 object TypedSQL extends App {
   val dc = DatabaseConfig.forAnnotation[JdbcProfile]
   import dc.driver.api._
 
-  def getSuppliers(id: Int): DBIO[Seq[(Int, String, String, String, String, String)]] =
-    tsql"select * from suppliers where id > $id"
+  def getUsers(id: Int): DBIO[Seq[(Int, String, String, String, String, String)]] =
+    tsql"select id, name, age from users where id > $id"
 
   val db = dc.db
   try {
 
     val a: DBIO[Unit] =
-      getSuppliers(50).map { s =>
-        println("All suppliers > 50:")
-        s.foreach(println)
+      getUsers(1).map { u =>
+        println("All users > 1:")
+        u.foreach(println)
       }
 
     val f: Future[Unit] = db.run(a)
